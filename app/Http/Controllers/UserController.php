@@ -104,26 +104,19 @@ class UserController extends Controller
 
         $user = User::findOrFail($id);
 
-        var_dump($request);
-
         //u_var for update variable
-        // $user->update([
-        //     'firstname' => $request->u_firstname,
-        //     'lastname' => $request->u_lastname,
-        //     'phone' => $request->u_phone,
-        //     'email' => $request->u_email,
-        //     'role_id' => $request->u_role_id,
-        // ]);
-        $user->firstname = $request->u_firstname;
-        $user->lastname = $request->u_lastname;
-        $user->phone = $request->u_phone;
-        $user->email = $request->u_email;
-        $user->role_id = $request->u_role_id;
-
-        if($request->has('u_password')){
+        $user->update([
+            'firstname' => $request->u_firstname,
+            'lastname' => $request->u_lastname,
+            'phone' => $request->u_phone,
+            'email' => $request->u_email,
+            'role_id' => $request->u_role_id,
+        ]);
+        
+        if($request->u_password !== NULL){
             $user->password = $request->u_password;
+            $user->save();
         }
-        $user->save();
 
         return redirect('/users');
     }

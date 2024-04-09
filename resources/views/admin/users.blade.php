@@ -154,7 +154,7 @@
 				</button>
 			</div>
 			<div class="modal-body">
-				<form class="mx-4" id="user-deletion-form" action="/users/delete/{id}" method="POST">
+				<form class="mx-4" id="user-deletion-form" method="POST">
 					@csrf
 					<p>Êtes-vous sûr de vouloir supprimer l'utilisateur <span id="username"></span> ?</p>
 				</form>
@@ -181,6 +181,7 @@
 			<tr>
 			  <th>Id</th>
 			  <th>Nom et Prénoms</th>
+			  <th>Phone</th>
 			  <th>Email</th>
 			  <th>Role</th>
 			  <th>Actions</th>
@@ -195,13 +196,14 @@
 				<tr>
 				<td>{{ $element->id }}</td>
 				<td>{{ $element->lastname}} {{ $element->firstname }}</td>
+				<td>{{ $element->phone }}</td>
 				<td>{{ $element->email }}</td>
 				<td>{{ $element->role->name }}</td>
 				<td>
 					<div class="row d-flex justify-content-around">
-						<a href="/show" class="border border-light bg-transparent" style="color: inherit"><i class="fas fa-eye"></i></a>
+						{{-- <button class="border border-light bg-transparent edit-btn" data-user-id="{{ $element->id }}" data-toggle="modal" data-target="#modal_user_show" style="color: inherit"><i class="fas fa-eye"></i></button> --}}
 						<button class="border border-light bg-transparent edit-btn" data-user-id="{{ $element->id }}" data-toggle="modal" data-target="#modal_user_update" style="color: inherit"><i class="fas fa-edit"></i></button>
-						<button class="border border-light bg-transparent edit-btn" data-user-id="{{ $element->id }}" data-toggle="modal" data-target="#modal_user_delete" style="color: inherit"><i class="fas fa-trash"></i></button>
+						<button class="border border-light bg-transparent edit-btn" data-toggle="modal" data-target="#modal_user_delete" style="color: inherit"><i class="fas fa-trash"></i></button>
 					</div>
 				</td>
 				</tr>
@@ -215,6 +217,7 @@
 				<tr>
 				  <th>Id</th>
 				  <th>Nom et Prénoms</th>
+				  <th>Phone</th>
 				  <th>Email</th>
 				  <th>Role</th>
 				  <th>Actions</th>
@@ -355,7 +358,7 @@
 			}
 		}
 	</script>
-	{{-- Update modal script --}}
+	{{-- Update and delete modal script --}}
 	<script>
 		var editbtns = document.getElementsByClassName('edit-btn');
 
