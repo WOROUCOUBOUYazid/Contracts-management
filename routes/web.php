@@ -29,11 +29,15 @@ Route::view('/login', 'login');
 Route::view('/adminDashboard', 'admin/adminDashboard');
 Route::get('/users', [UserController::class, 'index']);
 Route::post('/users/store', [UserController::class, 'store']);
+Route::get('/users/find/{id}', [UserController::class, 'find']);
+Route::post('/users/update/{id}', [UserController::class, 'update']);
+Route::post('/users/destroy/{id}', [UserController::class, 'destroy']);
 // Route::resource('/users', 'UserController');
 
 //Manager pages
 Route::view('/managerDashboard', 'manager/managerDashboard');
 Route::get('/contracts', ContractController::class.'@index');
+Route::post('/contracts/store', [ContractController::class.'@store']);
 Route::view('/payments', 'manager/payments');
 Route::view('/tasks', 'manager/tasks');
 

@@ -14,10 +14,10 @@
 		<div class="container-fluid">
 			<div class="row mb-2">
 				<div class="col-sm-6">
-					<h1 class="m-0 text-dark">Gestion des utilisateurs</h1>
+					<h1 class="m_0 text-dark">Gestion des utilisateurs</h1>
 				</div><!-- /.col -->
 				<div class="col-sm-6">
-					<button type="button" class="btn btn-default float-sm-right" data-toggle="modal" data-target="#modal-default">
+					<button type="button" class="btn btn-default float-sm-right" data-toggle="modal" data-target="#modal_user_creation">
 						Créer un utilisateur
 					</button>
 				</div><!-- /.col -->
@@ -26,7 +26,7 @@
 	</div>
 	
 	{{-- Modal (user creation form) --}}
-	<div class="modal fade" id="modal-default" data-backdrop="static">
+	<div class="modal fade" id="modal_user_creation" data-backdrop="static">
 		<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -36,7 +36,7 @@
 				</button>
 			</div>
 			<div class="modal-body">
-				<form class="mx-4" id="user-form" action="/users/store" method="POST">
+				<form class="mx-4" id="user-creation-form" action="/users/store" method="POST">
 					@csrf
 					<div>
 						<label for="lastname">Nom</label>
@@ -65,7 +65,7 @@
 					</div>
 					<div class="mt-3">
 						<label for="password">Mot de passe</label>
-						<input type="password" type="password" id="password" name="password" class="form-control" onblur="validatePassword()" required>
+						<input type="password" id="password" name="password" class="form-control" onblur="validatePassword()" required>
 						<span id="passwordError" style="font-size: 0.8em; color: red; font-style: italic; border: solid 1px transparent;"></span>
 					</div>
 					<div>
@@ -77,7 +77,91 @@
 			</div>
 			<div class="modal-footer justify-content-between">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
-				<button type="submit" class="btn btn-primary" form="user-form">Enregistrer</button>
+				<button type="submit" class="btn btn-primary" form="user-creation-form">Enregistrer</button>
+			</div>
+		</div>
+		<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+	{{-- Modal (user update form) --}}
+	<div class="modal fade" id="modal_user_update" data-backdrop="static">
+		<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">Modification d'un utilisateur</h4>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<form class="mx-4" id="user-update-form" method="POST">
+					@csrf
+					<div>
+						<label for="u_lastname">Nom</label>
+						<input type="text" id="u_lastname" name="u_lastname" class="form-control" required>
+					</div>
+					<div class="mt-3">
+						<label for="u_firstname">Prénom</label>
+						<input type="text" id="u_firstname" name="u_firstname" class="form-control" required>
+					</div>
+					<div class="mt-3">
+						<label for="u_phone">Téléphone</label>
+						<input type="number" id="u_phone" name="u_phone" class="form-control" required>
+					</div>
+					<div class="mt-3">
+						<label for="u_email">Email</label>
+						<input type="text" id="u_email" name="u_email" class="form-control" onblur="validateEmail()" oninput="deleteMessage()" required>
+						<span id="emailError" style="font-size: 0.8em; color: rgb(255, 68, 68); font-style: italic; border: solid 1px transparent;"></span>
+					</div>
+					<div>
+						<label for="u_role_id">Role de l'utilisateur</label>
+						<select class="form-control" id="u_role_id" name="u_role_id">
+							<option value="1">Administrateur</option>
+							<option value="2">Gestionnaire de contrat</option>
+							<option value="3" selected>Prestataire</option>
+						</select>
+					</div>
+					<div class="mt-3">
+						<label for="u_password">Mot de passe</label>
+						<input type="password" id="u_password" name="u_password" class="form-control" onblur="validatePassword()">
+						<span id="passwordError" style="font-size: 0.8em; color: red; font-style: italic; border: solid 1px transparent;"></span>
+					</div>
+					<div>
+						<label for="u_confirmPassword">Confirmer le mot de passe</label>
+						<input type="password" id="u_confirmPassword" name="u_confirmPassword" class="form-control" onblur="confirmPassword()">
+						<span id="confirmPasswordError" style="font-size: 0.8em; color: red; font-style: italic; border: solid 1px transparent;"></span>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer justify-content-between">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+				<button type="submit" class="btn btn-primary" form="user-update-form">Enregistrer</button>
+			</div>
+		</div>
+		<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+	{{-- Modal (user delete form) --}}
+	<div class="modal fade" id="modal_user_delete" data-backdrop="static">
+		<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">Suppression d'un utilisateur</h4>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<form class="mx-4" id="user-deletion-form" action="/users/delete/{id}" method="POST">
+					@csrf
+					<p>Êtes-vous sûr de vouloir supprimer l'utilisateur <span id="username"></span> ?</p>
+				</form>
+			</div>
+			<div class="modal-footer justify-content-between">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+				<button type="submit" class="btn btn-primary" form="user-deletion-form">Confirmer</button>
 			</div>
 		</div>
 		<!-- /.modal-content -->
@@ -106,18 +190,18 @@
 			
 			@if ($users)
 					
-				@foreach ($users as $user)
+				@foreach ($users as $element)
 					
 				<tr>
-				<td>{{ $user->id }}</td>
-				<td>{{ $user->lastname, $user->firstname }}</td>
-				<td>{{ $user->email }}</td>
-				<td>{{ $user->role->name }}</td>
+				<td>{{ $element->id }}</td>
+				<td>{{ $element->lastname}} {{ $element->firstname }}</td>
+				<td>{{ $element->email }}</td>
+				<td>{{ $element->role->name }}</td>
 				<td>
 					<div class="row d-flex justify-content-around">
-						<button class="border border-light bg-transparent"><i class="fas fa-eye"></i></button>
-						<button class="border border-light bg-transparent"><i class="fas fa-edit"></i></button>
-						<button class="border border-light bg-transparent"><i class="fas fa-trash"></i></button>
+						<a href="/show" class="border border-light bg-transparent" style="color: inherit"><i class="fas fa-eye"></i></a>
+						<button class="border border-light bg-transparent edit-btn" data-user-id="{{ $element->id }}" data-toggle="modal" data-target="#modal_user_update" style="color: inherit"><i class="fas fa-edit"></i></button>
+						<button class="border border-light bg-transparent edit-btn" data-user-id="{{ $element->id }}" data-toggle="modal" data-target="#modal_user_delete" style="color: inherit"><i class="fas fa-trash"></i></button>
 					</div>
 				</td>
 				</tr>
@@ -125,136 +209,8 @@
 				@endforeach
 			
 			@endif
-			{{-- <tr>
-			  <td>02</td>
-			  <td>Océane Adams</td>
-			  <td>test2@example.com</td>
-			  <td>Gestionnaire de contrats</td>
-			  <td>
-				<div class="row d-flex justify-content-around">
-					<button class="border border-light bg-transparent"><i class="fas fa-eye"></i></button>
-					<button class="border border-light bg-transparent"><i class="fas fa-edit"></i></button>
-					<button class="border border-light bg-transparent"><i class="fas fa-trash"></i></button>
-				</div>
-			  </td>
-			</tr>
-			<tr>
-			  <td>03</td>
-			  <td>Sarah Antony</td>
-			  <td>test3@example.com</td>
-			  <td>Gestionnaire de contrats</td>
-			  <td>
-				<div class="row d-flex justify-content-around">
-					<button class="border border-light bg-transparent"><i class="fas fa-eye"></i></button>
-					<button class="border border-light bg-transparent"><i class="fas fa-edit"></i></button>
-					<button class="border border-light bg-transparent"><i class="fas fa-trash"></i></button>
-				</div>
-			  </td>
-			</tr>
-			<tr>
-			  <td>04</td>
-			  <td>Mathias Carlton</td>
-			  <td>test4@example.com</td>
-			  <td>Prestataire</td>
-			  <td>
-				<div class="row d-flex justify-content-around">
-					<button class="border border-light bg-transparent"><i class="fas fa-eye"></i></button>
-					<button class="border border-light bg-transparent"><i class="fas fa-edit"></i></button>
-					<button class="border border-light bg-transparent"><i class="fas fa-trash"></i></button>
-				</div>
-			  </td>
-			</tr>
-			<tr>
-			  <td>05</td>
-			  <td>Céline Brooks</td>
-			  <td>test5@example.com</td>
-			  <td>Prestataire</td>
-			  <td>
-				<div class="row d-flex justify-content-around">
-					<button class="border border-light bg-transparent"><i class="fas fa-eye"></i></button>
-					<button class="border border-light bg-transparent"><i class="fas fa-edit"></i></button>
-					<button class="border border-light bg-transparent"><i class="fas fa-trash"></i></button>
-				</div>
-			  </td>
-			</tr>
-			<tr>
-			  <td>06</td>
-			  <td>Benjamin Kane</td>
-			  <td>test6@example.com</td>
-			  <td>Prestataire</td>
-			  <td>
-				<div class="row d-flex justify-content-around">
-					<button class="border border-light bg-transparent"><i class="fas fa-eye"></i></button>
-					<button class="border border-light bg-transparent"><i class="fas fa-edit"></i></button>
-					<button class="border border-light bg-transparent"><i class="fas fa-trash"></i></button>
-				</div>
-			  </td>
-			</tr>
-			<tr>
-			  <td>07</td>
-			  <td>Charlie Potter</td>
-			  <td>test7@example.com</td>
-			  <td>Prestataire</td>
-			  <td>
-				<div class="row d-flex justify-content-around">
-					<button class="border border-light bg-transparent"><i class="fas fa-eye"></i></button>
-					<button class="border border-light bg-transparent"><i class="fas fa-edit"></i></button>
-					<button class="border border-light bg-transparent"><i class="fas fa-trash"></i></button>
-				</div>
-			  </td>
-			</tr>
-			<tr>
-			  <td>08</td>
-			  <td>Freddy Simpson</td>
-			  <td>test8@example.com</td>
-			  <td>Gestionnaire de contrats</td>
-			  <td>
-				<div class="row d-flex justify-content-around">
-					<button class="border border-light bg-transparent"><i class="fas fa-eye"></i></button>
-					<button class="border border-light bg-transparent"><i class="fas fa-edit"></i></button>
-					<button class="border border-light bg-transparent"><i class="fas fa-trash"></i></button>
-				</div>
-			  </td>
-			</tr>
-			<tr>
-			  <td>09</td>
-			  <td>Turner Amélie</td>
-			  <td>test9@example.com</td>
-			  <td>Prestataire</td>
-			  <td>
-				<div class="row d-flex justify-content-around">
-					<button class="border border-light bg-transparent"><i class="fas fa-eye"></i></button>
-					<button class="border border-light bg-transparent"><i class="fas fa-edit"></i></button>
-					<button class="border border-light bg-transparent"><i class="fas fa-trash"></i></button>
-				</div>
-			  </td>
-			</tr>
-			<tr>
-			  <td>10</td>
-			  <td>Tiles Wolff</td>
-			  <td>test10@example.com</td>
-			  <td>Prestataire</td>
-			  <td>
-				<div class="row d-flex justify-content-around">
-					<button class="border border-light bg-transparent"><i class="fas fa-eye"></i></button>
-					<button class="border border-light bg-transparent"><i class="fas fa-edit"></i></button>
-					<button class="border border-light bg-transparent"><i class="fas fa-trash"></i></button>
-				</div>
-			  </td>
-			</tr>
-			<tr>
-			  <td>11</td>
-			  <td>Antony Davis</td>
-			  <td>test11@example.com</td>
-			  <td>Prestataire</td>
-			  <td>
-				<div class="row d-flex justify-content-around">
-					<button class="border border-light bg-transparent"><i class="fas fa-eye"></i></button>
-					<button class="border border-light bg-transparent"><i class="fas fa-edit"></i></button>
-					<button class="border border-light bg-transparent"><i class="fas fa-trash"></i></button>
-				</div>
-			  </td>
-			</tr> --}}
+
+			</tbody>
 			<tfoot>
 				<tr>
 				  <th>Id</th>
@@ -263,7 +219,6 @@
 				  <th>Role</th>
 				  <th>Actions</th>
 				</tr>
-			</tfoot>
 			</tfoot>
 		  </table>
 		</div>
@@ -399,5 +354,49 @@
 				errorSpan.textContent = '';
 			}
 		}
+	</script>
+	{{-- Update modal script --}}
+	<script>
+		var editbtns = document.getElementsByClassName('edit-btn');
+
+		var lastname = document.getElementById('u_lastname');
+		var firstname = document.getElementById('u_firstname');
+		var phone = document.getElementById('u_phone');
+		var email = document.getElementById('u_email');
+		var role_id = document.getElementById('u_role_id');
+
+		var form = document.getElementById('user-update-form');
+		var delete_form = document.getElementById('user-deletion-form');
+		var span = document.getElementById('username');
+
+		for (let i = 0; i < editbtns.length; i++) {
+			editbtns[i].addEventListener('click', function (){
+				let id = this.getAttribute('data-user-id');
+				fetch(`/users/find/${id}`, {
+					method: 'GET',
+					headers: {
+						'Content-Type': 'application/json',
+						'X-CSRF-TOKEN': '{{ csrf_token() }}'
+					},
+				})
+				.then(response => response.json())
+				.then(data => {
+					// console.log(data); // Handle the response from the server
+					lastname.value = data.lastname;
+					firstname.value = data.firstname;
+					phone.value = data.phone;
+					email.value = data.email;
+					role_id.value = data.role_id;
+
+					form.action = `/users/update/${data.id}`;
+					delete_form.action = `/users/destroy/${data.id}`;
+
+					span.textContent = `${data.lastname} ${data.firstname}`;
+					// form.setAttribute('action', `/users/update/${data.id}`);
+				})
+				.catch(error => console.error('Error:', error));
+			});
+		}
+
 	</script>
 @endsection
