@@ -18,7 +18,7 @@ return new class extends Migration
             $table->date('start_date');
             $table->date('end_date');
             $table->integer('amount');
-            $table->boolean('status');
+            $table->string('status');
             $table->string('file')->nullable();
             $table->foreignId('service_provider_id')->constrained();
             $table->timestamps();

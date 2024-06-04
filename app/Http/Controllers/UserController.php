@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\ServiceProvider;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
@@ -20,12 +21,6 @@ class UserController extends Controller
         // return view('admin.users', ['users' => $users]);
         return view('admin.users', compact('users'));
     }
-
-    // public function index() {
-    //     // return view('home', [
-    //     //     // 'articles' => Post::all()
-    //     // ]);
-    // }
 
     /**
      * Show the form for creating a new resource.
@@ -56,6 +51,7 @@ class UserController extends Controller
         // $userData = $request->except('confirmPassword');
         // User::create($userData);
 
+        // dd($request);
         $user = User::create([
             'firstname' => $request->firstname,
             'lastname' => $request->lastname,
@@ -64,6 +60,30 @@ class UserController extends Controller
             'role_id' => $request->role_id,
             'password' => $request->password,
         ]);
+
+        //role=3 is for serviceProvider
+        if ($request->role_id == 3) {
+
+            $validator = Validator::make($request->all(), [
+                'birth_date' => 'required|date',
+                'birth_place' => 'required|string|max:255',
+                'residence_place' => 'required|string|max:255',
+                'marital_status' => 'required|string|min:255',
+                'chidren_number' => 'required|integer',
+            ]);
+    
+            if ($validator->fails()) {
+                return redirect('/users')->with('error', $validator->errors());
+            }
+
+            $user->serviceProvider = ServiceProvider::create([
+                'birth_date' => $request->birth_date,
+                'birth_place' => $request->birth_place,
+                'residence_place' => $request->residence_place,
+                'marital_status' => $request->marital_status,
+                'chidren_number' => $request->chidren_number,
+            ]);
+        }
 
         return redirect('/users');
     }

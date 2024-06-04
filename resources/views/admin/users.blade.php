@@ -17,7 +17,7 @@
 					<h1 class="m_0 text-dark">Gestion des utilisateurs</h1>
 				</div><!-- /.col -->
 				<div class="col-sm-6">
-					<button type="button" class="btn btn-default float-sm-right" data-toggle="modal" data-target="#modal_user_creation">
+					<button type="button" class="btn btn-default float-sm-right" data-toggle="modal" data-target="#modal_creation_form">
 						Créer un utilisateur
 					</button>
 				</div><!-- /.col -->
@@ -26,7 +26,7 @@
 	</div>
 	
 	{{-- Modal (user creation form) --}}
-	<div class="modal fade" id="modal_user_creation" data-backdrop="static">
+	<div class="modal fade" id="modal_creation_form" data-backdrop="static">
 		<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -57,7 +57,7 @@
 					</div>
 					<div>
 						<label for="role_id">Role de l'utilisateur</label>
-						<select class="form-control" id="role_id" name="role_id">
+						<select class="form-control" id="role_id" name="role_id" onblur="hideInputs()">
 							<option value="1">Administrateur</option>
 							<option value="2">Gestionnaire de contrat</option>
 							<option value="3" selected>Prestataire</option>
@@ -70,8 +70,34 @@
 					</div>
 					<div>
 						<label for="confirmPassword">Confirmer le mot de passe</label>
-						<input type="password" id="confirmPassword" name="confirmPassword" class="form-control" onblur="confirmPassword()" required>
+						<input type="password" id="confirmPassword" name="confirmPassword" class="form-control" required>
 						<span id="confirmPasswordError" style="font-size: 0.8em; color: red; font-style: italic; border: solid 1px transparent;"></span>
+					</div>
+					<div id="hidden-inputs">
+						<div class="hidden-group">
+							<label for="birth_date">Date de naissance</label>
+							<input type="date" class="form-control" id="birth_date" name="birth_date">
+						</div>
+						<div class="hidden-group mt-3">
+							<label for="birth_place">Lieu de naissance</label>
+							<input type="text" class="form-control" id="birth_place" name="birth_place">
+						</div>
+						{{-- <div class="hidden-group mt-3">
+							<label for="nationality">Nationalité</label>
+							<input type="text" class="form-control" id="nationality" name="nationality" required>
+						</div> --}}
+						<div class="hidden-group mt-3">
+							<label for="residence_place">Lieu de résidence</label>
+							<input type="text" class="form-control" id="residence_place" name="residence_place">
+						</div>
+						<div class="hidden-group mt-3">
+							<label for="marital_status">Situation matrimonial</label>
+							<input type="text" class="form-control" id="marital_status" name="marital_status">
+						</div>
+						<div class="hidden-group mt-3">
+							<label for="chidren_number">Nombre d'enfants</label>
+							<input type="number" class="form-control" id="chidren_number" name="chidren_number">
+						</div>
 					</div>
 				</form>
 			</div>
@@ -85,7 +111,7 @@
 		<!-- /.modal-dialog -->
 	</div>
 	{{-- Modal (user update form) --}}
-	<div class="modal fade" id="modal_user_update" data-backdrop="static">
+	<div class="modal fade" id="modal_update_form" data-backdrop="static">c
 		<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -172,7 +198,7 @@
 	{{-- Datatable --}}
 	<div class="card">
 		<div class="card-header">
-		  <h3 class="card-title">Gérez vos utilisateurs ici</h3>
+		  <h3 class="card-title">Gérez vos utilisateurs ici.	</h3>
 		</div>
 		<!-- /.card-header -->
 		<div class="card-body">
@@ -194,18 +220,22 @@
 				@foreach ($users as $element)
 					
 				<tr>
-				<td>{{ $element->id }}</td>
-				<td>{{ $element->lastname}} {{ $element->firstname }}</td>
-				<td>{{ $element->phone }}</td>
-				<td>{{ $element->email }}</td>
-				<td>{{ $element->role->name }}</td>
-				<td>
-					<div class="row d-flex justify-content-around">
-						{{-- <button class="border border-light bg-transparent edit-btn" data-user-id="{{ $element->id }}" data-toggle="modal" data-target="#modal_user_show" style="color: inherit"><i class="fas fa-eye"></i></button> --}}
-						<button class="border border-light bg-transparent edit-btn" data-user-id="{{ $element->id }}" data-toggle="modal" data-target="#modal_user_update" style="color: inherit"><i class="fas fa-edit"></i></button>
-						<button class="border border-light bg-transparent edit-btn" data-toggle="modal" data-target="#modal_user_delete" style="color: inherit"><i class="fas fa-trash"></i></button>
-					</div>
+					<td>{{ $element->id }}</td>
+					<td>{{ $element->lastname}} {{ $element->firstname }}
+					{{-- @if ($element->role_id == 3)
+						{{ $element->serviceProvider->birthplace }}
+					@endif --}}
 				</td>
+					<td>{{ $element->phone }}</td>
+					<td>{{ $element->email }}</td>
+					<td>{{ $element->role->name }}</td>
+					<td>
+						<div class="row d-flex justify-content-around">
+							{{-- <button class="border border-light bg-transparent edit-btn" data-user-id="{{ $element->id }}" data-toggle="modal" data-target="#modal_user_show" style="color: inherit"><i class="fas fa-eye"></i></button> --}}
+							<button class="border border-light bg-transparent edit-btn" data-user-id="{{ $element->id }}" data-toggle="modal" data-target="#modal_update_form" style="color: inherit"><i class="fas fa-edit"></i></button>
+							<button class="border border-light bg-transparent edit-btn" data-toggle="modal" data-target="#modal_user_delete" style="color: inherit"><i class="fas fa-trash"></i></button>
+						</div>
+					</td>
 				</tr>
 
 				@endforeach
@@ -401,5 +431,39 @@
 			});
 		}
 
+	</script>
+	{{-- Hidden inputs --}}
+	<script>
+		function hideInputs() {
+			const role_id = document.getElementById('role_id');
+			const hiddenInputs = document.getElementById('hidden-inputs');
+
+			role_id.addEventListener('change', function() {
+				const selectedType = this.value;
+				// const fieldsToShow = document.getElementById('serviceProvider-fields');
+
+				// Hide all initially
+				const allFields = hiddenInputs.querySelectorAll('.hidden-group');
+				allFields.forEach(field => field.classList.add('d-none'));
+				allFields.forEach(field => {
+					if (field.required)
+						field.classList.removeAttribute('required')
+				});
+
+				// Show the specific fields based on selection
+				if (selectedType == 3) {
+					allFields.forEach(field => field.classList.remove('d-none'));
+					allFields.forEach(field => field.classList.setAttribute('required', 'required'));
+				}
+			});
+
+			// Trigger initial check on page load (optional)
+			window.onload = function() {
+				const selectedType = role_id.value;
+				role_id.dispatchEvent(new Event('change')); // Simulate change event
+			};
+		}
+
+		hideInputs();
 	</script>
 @endsection

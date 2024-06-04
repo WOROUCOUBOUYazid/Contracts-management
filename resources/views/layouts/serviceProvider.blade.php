@@ -13,11 +13,11 @@
         <a class="nav-link" data-widget="pushmenu" href="#" role="button" style="color: inherit"><i class="fas fa-bars"></i></a>
 
         {{-- navbar User icon --}}
-        <li class="navbar-nav ml-auto nav-item dropdown mr-2">
+        {{-- <li class="navbar-nav ml-auto nav-item dropdown mr-2">
           <a class="user-panel d-flex" data-toggle="dropdown" href="#">
             <div class="image">
               <i class="fas fa-user img-circle bg-white"></i>
-              {{-- <img src="../../../public/img/icons8-user-24.png"></img> --}}
+              <!-- <img src="../../../public/img/icons8-user-24.png"></img> -->
             </div>
           </a>
           <div class="dropdown-menu dropdown-menu dropdown-menu-right">
@@ -31,7 +31,12 @@
             <div class="dropdown-divider"></div>
             <a href="../Controllers/deconnexion.php" class="dropdown-item"> <i class="fas fa-sign-out-alt mr-2"></i> Déconnexion</a>
           </div>
-        </li>
+        </li> --}}
+        <div class="navbar-nav ml-auto d-flex align-items-center mr-2">
+          <a href="#" style="color: inherit">
+            <i class="fas fa-sign-out-alt mr-2"></i>Déconnexion
+          </a>
+        </div>
       </nav>
       <!-- /.navbar -->
 
@@ -51,49 +56,23 @@
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
               <!-- Add icons to the links using the .nav-icon class
                    with font-awesome or any other icon font library -->
-
-              {{-- dropdown --}}
-              {{-- <li class="nav-item has-treeview menu-open">
-                <a href="#" class="nav-link active">
-                  <i class="nav-icon fas fa-tachometer-alt"></i>
-                  <p>
-                    Dashboard
-                    <i class="right fas fa-angle-left"></i>
-                  </p>
-                </a>
-                <ul class="nav nav-treeview">
-                  <li class="nav-item">
-                    <a href="/dashboard" class="nav-link active">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Dashboard v1</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="./index2.html" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Dashboard v2</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="./index3.html" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Dashboard v3</p>
-                    </a>
-                  </li>
-                </ul>
-              </li> --}}
               
               <li class="nav-item">
-                <a href="/adminDashboard" class="nav-link">
-                  <i class="nav-icon fas fa-home"></i>
-                  <p>Tableau de bord</p>
+                <a href="/serviceProviderDashboard" class="nav-link">
+                  <i class="nav-icon fas fa-archive"></i>
+                  <p>Mes contrats</p>
                 </a>
               </li>
-
               <li class="nav-item">
-                <a href="/users" class="nav-link">
-                  <i class="nav-icon fas fa-archive"></i>
-                  <p>Utilisateurs</p>
+                <a href="#" class="nav-link">
+                  <i class="nav-icon fas fa-user"></i>
+                  <p>Profil</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <i class="nav-icon fas fa-sliders-h"></i>
+                  <p>Paramètres</p>
                 </a>
               </li>
             </ul>

@@ -10,11 +10,12 @@ class ServiceProvider extends Model
     use HasFactory;
 
     protected $fillable = [
-        'matricule',
-        'company',
-        'companyType',
-        'companyIfu',
-        'user_id',
+        'birth_date',
+        'birth_place',
+        // 'nationality',
+        'residence_place',
+        'marital_status',
+        'children_number',
     ];
 
     public function user()

@@ -1,0 +1,1 @@
+INSERT INTO `roles` (`id`, `code`, `name`, `created_at`, `updated_at`) VALUES (NULL, 'admin', 'Administrateur', current_timestamp(), current_timestamp()), (NULL, 'manager', 'Gestionnaire de contrats', current_timestamp(), current_timestamp()), (NULL, 'serviceProvider', 'Prestataire', current_timestamp(), current_timestamp());

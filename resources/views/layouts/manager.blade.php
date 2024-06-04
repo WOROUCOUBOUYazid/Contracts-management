@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <script>Nice</script>
     @include('components._head')
     @yield('head-complement')
     <title>@yield('title','Page title')</title>

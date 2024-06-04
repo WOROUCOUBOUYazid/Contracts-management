@@ -37,11 +37,12 @@ Route::post('/users/destroy/{id}', [UserController::class, 'destroy']);
 //Manager pages
 Route::view('/managerDashboard', 'manager/managerDashboard');
 Route::get('/contracts', ContractController::class.'@index');
-Route::post('/contracts/store', [ContractController::class.'@store']);
+Route::post('/contracts/store', ContractController::class.'@store');
 Route::view('/payments', 'manager/payments');
 Route::view('/tasks', 'manager/tasks');
 
 //ServiceProvider page
+Route::view('/serviceProviderDashboard', 'serviceProvider/serviceProviderDashboard');
 
 //Template
 Route::view('/dashboard', 'dashboard');

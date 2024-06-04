@@ -13,9 +13,11 @@ return new class extends Migration
     {
         Schema::create('service_providers', function (Blueprint $table) {
             $table->id();
-            $table->string('company')->nullable();
-            $table->string('company_type')->nullable();
-            $table->integer('company_ifu')->nullable();
+            $table->date('birth_date');
+            $table->string('birth_place');
+            $table->string('residence_place');
+            $table->string('marital_status');
+            $table->integer('children_number');
             $table->foreignId('user_id')->constrained();
             $table->timestamps();
         });
