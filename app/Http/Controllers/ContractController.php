@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Contract;
 use App\Models\User;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Models\ServiceProvider;
 use Illuminate\Support\Facades\Validator;
 
 
@@ -16,7 +17,7 @@ class ContractController extends Controller
      */
     public function index()
     {
-        $serviceProviders = User::where('role_id', 3)->get();
+        $serviceProviders = ServiceProvider::all();
         $contracts = Contract::all();
         return view('manager.contracts', ['contracts' => $contracts, 'serviceProviders' => $serviceProviders]);
     }
@@ -37,31 +38,30 @@ class ContractController extends Controller
         $validator = Validator::make($request->all(), [
             'title' => 'required|string|max:255',
             'description' => 'required|string',
-            'startDate' => 'required|date',
-            'endDate' => 'required|date',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date',
             'amount' => 'required|integer',
             'status' => 'required|string',
             'file' => 'nullable|file|max:10240',
-            'serviceProvider_id' => 'required|exists:service_providers,id',
+            'service_provider_id' => 'required|exists:service_providers,id',
         ]);
 
         if ($validator->fails()) {
             return redirect('/contracts')->withErrors($validator)->withInput();
         }
 
-        dd($errors->all());
+        //dd($errors->all());
 
         $contract = Contract::create([
             'title' => $request->title,
             'description' => $request->description,
-            'startDate' => $request->startDate,
-            'endDate' => $request->endDate,
+            'start_date' => $request->start_date,
+            'end_date' => $request->end_date,
             'amount' => $request->amount,
             'status' => $request->status,
             'file' => $request->file,
-            'serviceProvider_id' => $request->serviceProvider_id,
+            'service_provider_id' => $request->service_provider_id,
         ]);
-        dd($contract);
 
         return redirect('/contracts');
     }

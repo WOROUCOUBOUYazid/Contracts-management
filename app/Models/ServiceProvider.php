@@ -16,6 +16,7 @@ class ServiceProvider extends Model
         'residence_place',
         'marital_status',
         'children_number',
+        'user_id',
     ];
 
     public function user()
@@ -25,6 +26,7 @@ class ServiceProvider extends Model
 
     public function contracts()
     {
-        return $this->hasMany(Contract::class, 'serviceProvider_id');
+        // return $this->hasMany(Contract::class, 'service_provider_id');
+        return $this->hasMany(Contract::class);
     }
 }

@@ -53,13 +53,13 @@
 						<input type="text" id="description" name="description" class="form-control">
 					</div>
 					<div class="mt-3">
-						<label for="startDate">Date de début</label>
-						<input type="date" id="startDate" name="startDate" class="form-control" value="" required>
+						<label for="start_date">Date de début</label>
+						<input type="date" id="start_date" name="start_date" class="form-control" value="" required>
 					</div>
 					{{-- <input type="text" name="daterange" value="01/01/2015 - 01/31/2015" /> --}}
 					<div class="mt-3">
-						<label for="endDate">Date de fin</label>
-						<input type="date" id="endDate" name="endDate" class="form-control" required>
+						<label for="end_date">Date de fin</label>
+						<input type="date" id="end_date" name="end_date" class="form-control" required>
 					</div>
 					<div class="mt-3">
 						<label for="amount">Montant</label>
@@ -74,26 +74,27 @@
 						</select>
 					</div>
 					<div class="mt-3">
-						<label for="serviceProvider_id">Prestataire</label>
-						<select class="form-control" id="serviceProvider_id" name="serviceProvider_id">
+						<label for="service_provider_id">Prestataire</label>
+						<select class="form-control" id="service_provider_id" name="service_provider_id">
 							
 							@if ($serviceProviders)
 								@foreach ($serviceProviders as $serviceProvider)
 								
-								<option value="{{ $serviceProvider->id }}">{{ $serviceProvider->lastname }}</option>
-								
+								<option value="{{ $serviceProvider->id }}">{{ $serviceProvider->user->lastname }}</option>
+						
 								@endforeach
 							@endif
 							
 						</select>
 					</div>
-					<div class="mt-3">
+					<input type="file" name="file" id="file">
+					{{-- <div class="mt-3">
 						<label for="file">Fichier</label>
 						<div class="custom-file">
 							<input type="file" class="custom-file-input" name="file" id="customFile">
 							<label class="custom-file-label" for="customFile">Choose file</label>
 						</div>
-					</div>
+					</div> --}}
 				</form>
 			</div>
 			<div class="modal-footer justify-content-between">
@@ -241,9 +242,9 @@
 				<tr>
 					<td>{{ $element->id }}</td>
 					<td>{{ $element->title }}</td>
-					<td>{{ $element->serviceProvider->lastname }} {{ $element->serviceProvider->firstname }}</td>
-					<td>{{ $element->startDate }}</td>
-					<td>{{ $element->endDate }}</td>
+					<td>{{ $element->serviceProvider->user->lastname }} {{ $element->serviceProvider->user->firstname }}</td>
+					<td>{{ $element->start_date }}</td>
+					<td>{{ $element->end_date }}</td>
 					<td>
 					  <div class="row d-flex justify-content-around">
 						  <button class="d-flex flex-column align-items-center border border-light bg-transparent"><a href="/tasks" style="text-decoration: none; color: inherit;"><i class="fas fa-clipboard"></i><p class="small">Taches</p></a></button>
@@ -253,8 +254,8 @@
 							  </button>
 							  <ul class="dropdown-menu">
 								<li><a class="dropdown-item d-flex align-items-center" href="#"><i class="fas fa-eye mr-2"></i>Afficher</a></li>
-								<li><button class="border border-light bg-transparent edit-btn" data-user-id="{{ $element->id }}" data-toggle="modal" data-target="#modal_update_form" style="color: inherit"><i class="fas fa-edit"></i> Modifier</button></li>
-								<li><button class="border border-light bg-transparent edit-btn" data-toggle="modal" data-target="#modal_contract_delete" style="color: inherit"><i class="fas fa-trash"></i></button></li>
+								<li><button class="dropdown-item border border-light bg-transparent edit-btn" data-user-id="{{ $element->id }}" data-toggle="modal" data-target="#modal_update_form" style="color: inherit"><i class="fas fa-edit mr-2"></i>Modifier</button></li>
+								<li><button class="dropdown-item border border-light bg-transparent edit-btn" data-toggle="modal" data-target="#modal_contract_delete" style="color: inherit"><i class="fas fa-trash mr-2"></i>Déssativer</button></li>
 							  </ul>
 						  </div>
 					  </div>

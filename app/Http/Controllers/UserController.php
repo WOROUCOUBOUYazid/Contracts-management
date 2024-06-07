@@ -45,7 +45,8 @@ class UserController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return redirect('/users')->with('error', $validator->errors());
+            // return redirect('/users')->with('error', $validator->errors());
+            return redirect('/users')->withErrors($validator)->withInput();
         }
 
         // $userData = $request->except('confirmPassword');
@@ -68,20 +69,27 @@ class UserController extends Controller
                 'birth_date' => 'required|date',
                 'birth_place' => 'required|string|max:255',
                 'residence_place' => 'required|string|max:255',
-                'marital_status' => 'required|string|min:255',
-                'chidren_number' => 'required|integer',
+                'marital_status' => 'required|string|max:255',
+                'children_number' => 'required|integer',
             ]);
     
+            // if ($validator->fails()) {
+            //     return redirect('/users')->with('error', $validator->errors());
+            // }
+
             if ($validator->fails()) {
-                return redirect('/users')->with('error', $validator->errors());
+                return redirect('/users')->withErrors($validator)->withInput();
             }
+    
+            // dd($errors->all());
 
             $user->serviceProvider = ServiceProvider::create([
                 'birth_date' => $request->birth_date,
                 'birth_place' => $request->birth_place,
                 'residence_place' => $request->residence_place,
                 'marital_status' => $request->marital_status,
-                'chidren_number' => $request->chidren_number,
+                'children_number' => $request->children_number,
+                'user_id' => $user->id,
             ]);
         }
 
@@ -112,14 +120,12 @@ class UserController extends Controller
             'u_lastname' => 'required|string|max:255',
             'u_firstname' => 'required|string|max:255',
             'u_phone' => 'required|integer',
-            'u_email' => 'required|email|unique:users,email',
             'u_role_id' => 'required|integer',
-            'u_password' => 'sometimes|string|min:8',
-            'u_confirmPassword' => 'sometimes|string|same:u_password',
         ]);
 
         if ($validator->fails()) {
-            return redirect('/users')->with('error', $validator->errors());
+            // return redirect('/users')->with('error', $validator->errors());
+            return redirect('/users')->withErrors($validator)->withInput();
         }
 
         $user = User::findOrFail($id);
@@ -129,9 +135,19 @@ class UserController extends Controller
             'firstname' => $request->u_firstname,
             'lastname' => $request->u_lastname,
             'phone' => $request->u_phone,
-            'email' => $request->u_email,
             'role_id' => $request->u_role_id,
         ]);
+        if($request->u_email !== NULL){
+            if($request->u_email !== $user->email){
+                $validator = Validator::make($request->all(), [
+                    'u_email' => 'required|email|unique:users,email|',
+                ]);
+
+                $user->email = $request->u_email;
+                $user->save();
+            }
+        }
+        
         
         if($request->u_password !== NULL){
             $user->password = $request->u_password;
@@ -146,6 +162,7 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
+        // dd($id);
         $user = User::findOrFail($id);
         $user->delete();
         return redirect('/users');

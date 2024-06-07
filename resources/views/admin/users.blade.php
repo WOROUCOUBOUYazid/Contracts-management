@@ -95,8 +95,8 @@
 							<input type="text" class="form-control" id="marital_status" name="marital_status">
 						</div>
 						<div class="hidden-group mt-3">
-							<label for="chidren_number">Nombre d'enfants</label>
-							<input type="number" class="form-control" id="chidren_number" name="chidren_number">
+							<label for="children_number">Nombre d'enfants</label>
+							<input type="number" class="form-control" id="children_number" name="children_number">
 						</div>
 					</div>
 				</form>
@@ -137,7 +137,7 @@
 					</div>
 					<div class="mt-3">
 						<label for="u_email">Email</label>
-						<input type="text" id="u_email" name="u_email" class="form-control" onblur="validateEmail()" oninput="deleteMessage()" required>
+						<input type="text" id="u_email" name="u_email" class="form-control" onblur="validateEmail()" oninput="deleteMessage()">
 						<span id="emailError" style="font-size: 0.8em; color: rgb(255, 68, 68); font-style: italic; border: solid 1px transparent;"></span>
 					</div>
 					<div>
@@ -182,7 +182,7 @@
 			<div class="modal-body">
 				<form class="mx-4" id="user-deletion-form" method="POST">
 					@csrf
-					<p>Êtes-vous sûr de vouloir supprimer l'utilisateur <span id="username"></span> ?</p>
+					<p>Êtes-vous sûr de vouloir supprimer l'utilisateur <span id="username-span"></span> ?</p>
 				</form>
 			</div>
 			<div class="modal-footer justify-content-between">
@@ -195,6 +195,13 @@
 		<!-- /.modal-dialog -->
 	</div>
 
+	@if ($errors)
+		@foreach ($errors->all() as $error)
+			<div>
+				{{ $error }}
+			</div>
+		@endforeach
+	@endif
 	{{-- Datatable --}}
 	<div class="card">
 		<div class="card-header">
@@ -400,7 +407,7 @@
 
 		var form = document.getElementById('user-update-form');
 		var delete_form = document.getElementById('user-deletion-form');
-		var span = document.getElementById('username');
+		var username_span = document.getElementById('username-span');
 
 		for (let i = 0; i < editbtns.length; i++) {
 			editbtns[i].addEventListener('click', function (){
@@ -421,10 +428,12 @@
 					email.value = data.email;
 					role_id.value = data.role_id;
 
+					username_span.textContent = 'Yo';
+
 					form.action = `/users/update/${data.id}`;
 					delete_form.action = `/users/destroy/${data.id}`;
 
-					span.textContent = `${data.lastname} ${data.firstname}`;
+					// span.textContent = `${data.lastname} ${data.firstname}`;
 					// form.setAttribute('action', `/users/update/${data.id}`);
 				})
 				.catch(error => console.error('Error:', error));

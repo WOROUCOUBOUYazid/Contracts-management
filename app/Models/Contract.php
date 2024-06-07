@@ -12,17 +12,18 @@ class Contract extends Model
     protected $fillable = [
         'title',
         'description',
-        'startDate',
-        'endDate',
+        'start_date',
+        'end_date',
         'amount',
         'status',
         'file',
-        'serviceProvider_id',
+        'service_provider_id',
     ];
 
     public function serviceProvider()
     {
-        return $this->belongsTo(ServiceProvider::class, 'serviceProvider_id');
+        // return $this->belongsTo(ServiceProvider::class, 'service_provider_id');
+        return $this->belongsTo(ServiceProvider::class);
     }
 
     public function tasks()
