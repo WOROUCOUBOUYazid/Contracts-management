@@ -11,10 +11,12 @@ class Contract extends Model
 
     protected $fillable = [
         'title',
-        'description',
+        'object',
         'start_date',
         'end_date',
-        'amount',
+        'functions',
+        'earnings',
+        'salary',
         'status',
         'file',
         'service_provider_id',

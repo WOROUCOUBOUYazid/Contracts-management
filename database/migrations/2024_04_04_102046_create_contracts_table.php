@@ -14,10 +14,12 @@ return new class extends Migration
         Schema::create('contracts', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('description');
+            $table->string('object');
             $table->date('start_date');
             $table->date('end_date');
-            $table->integer('amount');
+            $table->string('functions');
+            $table->string('earnings');
+            $table->integer('salary');
             $table->string('status');
             $table->string('file')->nullable();
             $table->foreignId('service_provider_id')->constrained();

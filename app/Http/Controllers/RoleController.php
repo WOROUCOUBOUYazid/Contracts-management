@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Role;
+use App\Models\Ressource;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -13,7 +14,9 @@ class RoleController extends Controller
      */
     public function index()
     {
-        //
+        return view('roles.index', [
+            'roles' => Role::with('ressources')->latest()->get(),
+        ]);
     }
 
     /**
@@ -21,7 +24,9 @@ class RoleController extends Controller
      */
     public function create()
     {
-        //
+        return view('roles.create', [
+            'ressources' => Ressource::all(),
+        ]);
     }
 
     /**
@@ -29,7 +34,16 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        $role = Role::create([
+            'code' => $request->code,
+            'name' => $request->name,
+        ]);
+        $role->ressources()->attach(
+            $request->ressources
+        );
+
+        return redirect(route('roles.list', absolute: false));
     }
 
     /**

@@ -12,8 +12,8 @@ class ServiceProvider extends Model
     protected $fillable = [
         'birth_date',
         'birth_place',
-        // 'nationality',
         'residence_place',
+        'adress',
         'marital_status',
         'children_number',
         'user_id',

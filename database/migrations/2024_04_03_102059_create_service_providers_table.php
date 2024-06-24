@@ -16,6 +16,7 @@ return new class extends Migration
             $table->date('birth_date');
             $table->string('birth_place');
             $table->string('residence_place');
+            $table->string('adress');
             $table->string('marital_status');
             $table->integer('children_number');
             $table->foreignId('user_id')->constrained();

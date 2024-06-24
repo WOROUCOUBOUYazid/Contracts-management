@@ -1,49 +1,46 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\RessourceController;
 use App\Http\Controllers\ContractController;
+use App\Http\Controllers\UserController;
 
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
 
 Route::get('/', function () {
     return view('welcome');
+})->name("tienstiens");
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-// Route::get('/user', [AdminController::class, 'dashboard']);
+Route::get('/roles', [RoleController::class, 'index'])->name('roles.list');
+Route::get('/roles/create', [RoleController::class, 'create'])->name('roles.create');
+Route::post('/roles/store', [RoleController::class, 'store'])->name('roles.store');
 
-//Auth page
-Route::view('/login', 'login');
+Route::get('/ressources', [RessourceController::class, 'index'])->name('ressources.index');
+Route::get('/ressources/create', [RessourceController::class, 'create'])->name('ressources.create');
+Route::get('/ressources/createmany', [RessourceController::class, 'list'])->name('ressources.list');
+Route::post('/ressources/store', [RessourceController::class, 'store'])->name('ressources.store');
 
-//Admin pages
-Route::view('/adminDashboard', 'admin/adminDashboard');
-Route::get('/users', [UserController::class, 'index']);
-Route::post('/users/store', [UserController::class, 'store']);
-Route::get('/users/find/{id}', [UserController::class, 'find']);
-Route::post('/users/update/{id}', [UserController::class, 'update']);
-Route::post('/users/destroy/{id}', [UserController::class, 'destroy']);
-// Route::resource('/users', 'UserController');
+Route::get('/users', [UserController::class, 'index'])->name('users.index');
+Route::post('/users/store', [UserController::class, 'store'])->name('users.store');
 
-//Manager pages
-Route::view('/managerDashboard', 'manager/managerDashboard');
-Route::get('/contracts', ContractController::class.'@index');
-Route::post('/contracts/store', ContractController::class.'@store');
-Route::view('/payments', 'manager/payments');
-Route::view('/tasks', 'manager/tasks');
+Route::get('/contracts', [ContractController::class, 'index'])->name('contracts.index');
+Route::get('/contracts/create', [ContractController::class, 'create'])->name('contracts.create');
+Route::get('/contracts/edit/{id}', [ContractController::class, 'edit'])->name('contracts.edit');
+Route::put('/contracts/update/{id}', [ContractController::class, 'update'])->name('contracts.update');
+Route::delete('/contracts/delete/{contract}', [ContractController::class, 'destroy'])->name('contracts.delete');
+Route::get('/contracts/download/{id}', [ContractController::class, 'download'])->name('contracts.download');
+Route::post('/contracts/store', [ContractController::class, 'store'])->name('contracts.store');
+Route::get('/contracts/pdf', [ContractController::class, 'showPdf'])->name('contracts.pdf');
 
-//ServiceProvider page
-Route::view('/serviceProviderDashboard', 'serviceProvider/serviceProviderDashboard');
-
-//Template
-Route::view('/dashboard', 'dashboard');
-
+require __DIR__.'/auth.php';

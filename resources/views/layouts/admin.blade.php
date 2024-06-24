@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    @include('components._head')
+    @include('partials._head')
     @yield('head-complement')
     <title>@yield('title','Page title')</title>
   </head>
@@ -42,10 +42,10 @@
           <img src="img/logo4.png" alt="Logo" class="brand-image img-circle elevation-3 mr-3 bg-white" style="opacity: .8">
           <span class="brand-text font-weight-light">SOLUX</span>
         </a>
-    
+
         <!-- Sidebar -->
         <div class="sidebar">
-    
+
           <!-- Sidebar Menu -->
           <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
@@ -82,7 +82,7 @@
                   </li>
                 </ul>
               </li> --}}
-              
+
               <li class="nav-item">
                 <a href="/adminDashboard" class="nav-link">
                   <i class="nav-icon fas fa-home"></i>
@@ -109,7 +109,7 @@
       </div>
       <!-- /.content-wrapper -->
 
-    @include('components._js_files')
+    @include('partials._js_files')
     @yield('js_files-complement')
   </body>
 </html>

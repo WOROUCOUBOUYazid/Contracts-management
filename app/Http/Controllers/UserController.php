@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Role;
 use App\Models\ServiceProvider;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Hash;
 
 
 class UserController extends Controller
@@ -16,10 +18,11 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::all();
-
-        // return view('admin.users', ['users' => $users]);
-        return view('admin.users', compact('users'));
+        // return view('users.index', compact('users'));
+        return view('users.index', [
+            'users' => User::all(),
+            'roles' => Role::all(),
+        ]);
     }
 
     /**
@@ -34,23 +37,25 @@ class UserController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request) {
-        $validator = Validator::make($request->all(), [
-            'lastname' => 'required|string|max:255',
-            'firstname' => 'required|string|max:255',
-            'phone' => 'required|integer',
-            'email' => 'required|email|unique:users,email',
-            'role_id' => 'required|integer',
-            'password' => 'required|string|min:8',
-            'confirmPassword' => 'required|string|same:password',
-        ]);
+        // $validator = Validator::make($request->all(), [
+        //     'lastname' => 'required|string|max:255',
+        //     'firstname' => 'required|string|max:255',
+        //     'phone' => 'required|integer',
+        //     'email' => 'required|email|unique:users,email',
+        //     'role_id' => 'required|integer',
+        //     'password' => 'required|string|min:8',
+        //     'confirmPassword' => 'required|string|same:password',
+        //     'birth_date' => 'nullable|date',
+        //     'birth_place' => 'nullable|string|max:255',
+        //     'residence_place' => 'nullable|string|max:255',
+        //     'adress' => 'nullable|string|max:255',
+        //     'marital_status' => 'nullable|string|max:255',
+        //     'children_number' => 'nullable|integer',
+        // ]);
 
-        if ($validator->fails()) {
-            // return redirect('/users')->with('error', $validator->errors());
-            return redirect('/users')->withErrors($validator)->withInput();
-        }
-
-        // $userData = $request->except('confirmPassword');
-        // User::create($userData);
+        // if ($validator->fails()) {
+        //     return redirect('/users')->with('error', $validator->errors());
+        // }
 
         // dd($request);
         $user = User::create([
@@ -59,39 +64,24 @@ class UserController extends Controller
             'phone' => $request->phone,
             'email' => $request->email,
             'role_id' => $request->role_id,
-            'password' => $request->password,
+            'password' => Hash::make($request->password),
         ]);
 
-        //role=3 is for serviceProvider
-        if ($request->role_id == 3) {
+        $role = Role::findOrFail($request->role_id);
 
-            $validator = Validator::make($request->all(), [
-                'birth_date' => 'required|date',
-                'birth_place' => 'required|string|max:255',
-                'residence_place' => 'required|string|max:255',
-                'marital_status' => 'required|string|max:255',
-                'children_number' => 'required|integer',
-            ]);
-    
-            // if ($validator->fails()) {
-            //     return redirect('/users')->with('error', $validator->errors());
-            // }
-
-            if ($validator->fails()) {
-                return redirect('/users')->withErrors($validator)->withInput();
-            }
-    
-            // dd($errors->all());
-
+        if($role->name == 'Prestataire'){
             $user->serviceProvider = ServiceProvider::create([
                 'birth_date' => $request->birth_date,
                 'birth_place' => $request->birth_place,
                 'residence_place' => $request->residence_place,
+                'adress' => $request->adress,
                 'marital_status' => $request->marital_status,
                 'children_number' => $request->children_number,
                 'user_id' => $user->id,
             ]);
         }
+
+        // dd($user->serviceProvider);
 
         return redirect('/users');
     }
@@ -147,8 +137,8 @@ class UserController extends Controller
                 $user->save();
             }
         }
-        
-        
+
+
         if($request->u_password !== NULL){
             $user->password = $request->u_password;
             $user->save();
