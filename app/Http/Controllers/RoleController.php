@@ -15,7 +15,8 @@ class RoleController extends Controller
     public function index()
     {
         return view('roles.index', [
-            'roles' => Role::with('ressources')->latest()->get(),
+            'roles' => Role::all(),
+            'ressources' => Ressource::all(),
         ]);
     }
 

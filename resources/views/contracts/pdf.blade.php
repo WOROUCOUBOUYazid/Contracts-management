@@ -11,9 +11,9 @@
     <div class="container mx-auto my-8 p-8 bg-white shadow-md rounded-lg">
 
         <div class="mb-4">
-            <p class="mt-"px>ANNEE 2023/ N°...</p>
+            <p class="mt-"px>ANNEE 2023/ N°{{$contract->id}} </p>
 
-            <h1 class="text-3xl font-bold my-96 text-center">Contrat de Prestation de Service au nom de Monsieur ……………………….</h1>
+            <h1 class="text-3xl font-bold my-96 text-center">Contrat de Prestation de Service au nom de Monsieur {{$contract->serviceProvider->user->firstname}} {{$contract->serviceProvider->user->lastname}}</h1>
 
         </div>
 
@@ -108,7 +108,7 @@
                 <li>Garde de 19 h à 08h. un montant forfaitaire de deux mille cinq cents (2500) FCFA</li>
                 <li>En dehors des forfaits de prestation, il sera alloué au prestataire un forfait mensuel de dix mille (10.000) francs CFA pour les déplacements</li>
             </ul>
-            <p>La rémunération mensuelle globale subira la retenue obligatoire à la source, prévue par les dispositions en vigueur (AIB). Elle sera d’un maximum de soixante-douze mille cinq cent (72 500) F CFA y compris les forfaits de déplacement.</p>
+            <p>La rémunération mensuelle globale subira la retenue obligatoire à la source, prévue par les dispositions en vigueur (AIB). Elle sera d’un maximum de {{$contract->salary}} F CFA y compris les forfaits de déplacement.</p>
             <p>La rémunération du prestataire de service est imputée sur les ressources du budget autonome de l’ANTS.</p>
         </div>
 

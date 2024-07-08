@@ -36,7 +36,7 @@
 				</button>
 			</div>
 			<div class="modal-body">
-				<form class="mx-4" id="user-creation-form" action="/users/store" method="POST">
+				<form class="mx-4" id="user-creation-form" method="POST" action="{{ route('users.store') }}">
 					@csrf
 					<div>
 						<label for="lastname">Nom</label>
@@ -59,12 +59,12 @@
 						<label for="role_id">Role de l'utilisateur</label>
 						<select class="form-control" id="role_id" name="role_id" onblur="hideInputs()">
                             @if ($roles)
-                            @foreach ($roles as $role)
+                                @foreach ($roles as $role)
 
-                            <option value="{{ $role->id }}">{{ $role->name }}</option>
+                                <option value="{{ $role->id }}">{{ $role->name }}</option>
 
-                            @endforeach
-                        @endif
+                                @endforeach
+                            @endif
 						</select>
 					</div>
 					<div class="mt-3">
@@ -107,6 +107,7 @@
 							<input type="number" class="form-control" id="children_number" name="children_number" value="0">
 						</div>
 					</div>
+                    {{-- <button type="submit" class="btn btn-primary" >Enregistrer</button> --}}
 				</form>
 			</div>
 			<div class="modal-footer justify-content-between">
@@ -129,8 +130,9 @@
 				</button>
 			</div>
 			<div class="modal-body">
-				<form class="mx-4" id="user-update-form" method="POST">
+				<form class="mx-4" id="user-update-form" method="POST" action="">
 					@csrf
+                    @method('PUT')
 					<div>
 						<label for="u_lastname">Nom</label>
 						<input type="text" id="u_lastname" name="u_lastname" class="form-control" required>
@@ -150,10 +152,14 @@
 					</div>
 					<div>
 						<label for="u_role_id">Role de l'utilisateur</label>
-						<select class="form-control" id="u_role_id" name="u_role_id">
-							<option value="1">Administrateur</option>
-							<option value="2">Gestionnaire de contrat</option>
-							<option value="3" selected>Prestataire</option>
+						<select class="form-control" id="u_role_id" name="u_role_id"  onblur="u_hideInputs()">
+							@if ($roles)
+                                @foreach ($roles as $role)
+
+                                <option value="{{ $role->id }}">{{ $role->name }}</option>
+
+                                @endforeach
+                            @endif
 						</select>
 					</div>
 					<div class="mt-3">
@@ -165,6 +171,36 @@
 						<label for="u_confirmPassword">Confirmer le mot de passe</label>
 						<input type="password" id="u_confirmPassword" name="u_confirmPassword" class="form-control" onblur="confirmPassword()">
 						<span id="confirmPasswordError" style="font-size: 0.8em; color: red; font-style: italic; border: solid 1px transparent;"></span>
+					</div>
+                    <div id="u_hidden-inputs">
+						<div class="u_hidden-group">
+							<label for="u_birth_date">Date de naissance</label>
+							<input type="date" class="form-control" id="u_birth_date" name="u_birth_date">
+						</div>
+						<div class="u_hidden-group mt-3">
+							<label for="u_birth_place">Lieu de naissance</label>
+							<input type="text" class="form-control" id="u_birth_place" name="u_birth_place">
+						</div>
+						<div class="u_hidden-group mt-3">
+							<label for="u_residence_place">Lieu de résidence</label>
+							<input type="text" class="form-control" id="u_residence_place" name="u_residence_place">
+						</div>
+						<div class="u_hidden-group mt-3">
+							<label for="u_adress">Adresse</label>
+							<input type="text" class="form-control" id="u_adress" name="u_adress">
+						</div>
+						<div class="u_hidden-group mt-3">
+							<label for="u_marital_status">Situation matrimoniale</label>
+							<select class="form-control" id="u_marital_status" name="u_marital_status">
+                                <option value="Célibataire">Célibataire</option>
+                                <option value="En couple">En couple</option>
+                                <option value="Marié">Marié</option>
+                            </select>
+						</div>
+						<div class="u_hidden-group mt-3">
+							<label for="u_children_number">Nombre d'enfants</label>
+							<input type="number" class="form-control" id="u_children_number" name="u_children_number" value="0">
+						</div>
 					</div>
 				</form>
 			</div>
@@ -190,11 +226,12 @@
 			<div class="modal-body">
 				<form class="mx-4" id="user-deletion-form" method="POST">
 					@csrf
+                    @method('DELETE')
 					<p>Êtes-vous sûr de vouloir supprimer l'utilisateur <span id="username-span"></span> ?</p>
 				</form>
 			</div>
 			<div class="modal-footer justify-content-between">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+				<button type="reset" class="btn btn-default" data-dismiss="modal">Annuler</button>
 				<button type="submit" class="btn btn-primary" form="user-deletion-form">Confirmer</button>
 			</div>
 		</div>
@@ -232,24 +269,23 @@
 
 			@if ($users)
 
-				@foreach ($users as $element)
+				@foreach ($users as $user)
 
 				<tr>
-					<td>{{ $element->id }}</td>
-					<td>{{ $element->lastname}} {{ $element->firstname }}
-					{{-- @if ($element->role_id == 3)
-						{{ $element->serviceProvider->birthplace }}
-					@endif --}}
-				</td>
-					<td>{{ $element->phone }}</td>
-					<td>{{ $element->email }}</td>
-					<td>{{ $element->role->name }}</td>
+					<td>{{ $user->id }}</td>
+					<td>{{ $user->lastname}} {{ $user->firstname }}</td>
+					<td>{{ $user->phone }}</td>
+					<td>{{ $user->email }}</td>
+					<td>{{ $user->role->name }}</td>
 					<td>
 						<div class="row d-flex justify-content-around">
-							{{-- <button class="border border-light bg-transparent edit-btn" data-user-id="{{ $element->id }}" data-toggle="modal" data-target="#modal_user_show" style="color: inherit"><i class="fas fa-eye"></i></button> --}}
-							<button class="border border-light bg-transparent edit-btn" data-user-id="{{ $element->id }}" data-toggle="modal" data-target="#modal_update_form" style="color: inherit"><i class="fas fa-edit"></i></button>
-							<button class="border border-light bg-transparent edit-btn" data-toggle="modal" data-target="#modal_user_delete" style="color: inherit"><i class="fas fa-trash"></i></button>
-						</div>
+							{{-- <button class="border border-light bg-transparent edit-btn" data-user-id="{{ $user->id }}" data-toggle="modal" data-target="#modal_user_show" style="color: inherit"><i class="fas fa-eye"></i></button> --}}
+							<button class="border border-light bg-transparent edit_user" data-user="{{ $user }}" data-toggle="modal" data-target="#modal_update_form" style="color: inherit"><i class="fas fa-edit"></i></button>
+							<button class="border border-light bg-transparent delete_user" data-user="{{ $user }}" data-toggle="modal" data-target="#modal_user_delete" style="color: inherit"><i class="fas fa-trash"></i></button>
+
+                            {{-- <button class="border border-light bg-transparent edit-btn" style="color: inherit" onclick="location.href='{{ route('users.delete', $user) }}'"><i class="fas fa-trash"></i></button> --}}
+
+                        </div>
 					</td>
 				</tr>
 
@@ -343,7 +379,7 @@
 	{{-- validation script --}}
 	<script>
 		function validateEmail() {
-			const emailInput = document.getElementById('email');
+			const emailInput = document.getuserById('email');
 			const email = emailInput.value.trim();
 			const errorSpan = document.getElementById('emailError');
 
@@ -403,48 +439,113 @@
 	</script>
 	{{-- Update and delete modal script --}}
 	<script>
-		var editbtns = document.getElementsByClassName('edit-btn');
+		// var editbtns = document.getElementsByClassName('edit-btn');
 
 		var lastname = document.getElementById('u_lastname');
 		var firstname = document.getElementById('u_firstname');
 		var phone = document.getElementById('u_phone');
 		var email = document.getElementById('u_email');
-		var role_id = document.getElementById('u_role_id');
+        var role_id = document.getElementById('u_role_id');
 
-		var form = document.getElementById('user-update-form');
+        var birth_date = document.getElementById('u_birth_date');
+        var birth_place = document.getElementById('u_birth_place');
+        var residence_place = document.getElementById('u_residence_place');
+        var adress = document.getElementById('u_adress');
+        var children_number = document.getElementById('u_children_number');
+
+        var edit_form = document.getElementById('user-update-form');
+
 		var delete_form = document.getElementById('user-deletion-form');
 		var username_span = document.getElementById('username-span');
 
-		for (let i = 0; i < editbtns.length; i++) {
-			editbtns[i].addEventListener('click', function (){
-				let id = this.getAttribute('data-user-id');
-				fetch(`/users/find/${id}`, {
-					method: 'GET',
-					headers: {
-						'Content-Type': 'application/json',
-						'X-CSRF-TOKEN': '{{ csrf_token() }}'
-					},
-				})
-				.then(response => response.json())
-				.then(data => {
-					// console.log(data); // Handle the response from the server
-					lastname.value = data.lastname;
-					firstname.value = data.firstname;
-					phone.value = data.phone;
-					email.value = data.email;
-					role_id.value = data.role_id;
+        const delete_button = document.getElementsByClassName('delete_user');
+        const edit_button = document.getElementsByClassName('edit_user');
 
-					username_span.textContent = 'Yo';
+        Array.prototype.forEach.call(delete_button, button => {
+            button.addEventListener('click', function() {
+                const user = JSON.parse(this.getAttribute('data-user'));
+                console.log(user.id)
+                delete_form.action=`/users/delete/${user.id}`;
+            });
+        })
 
-					form.action = `/users/update/${data.id}`;
-					delete_form.action = `/users/destroy/${data.id}`;
+        Array.prototype.forEach.call(edit_button, button => {
+            button.addEventListener('click', function() {
+            const user = JSON.parse(this.getAttribute('data-user'));
+            console.log(user.id)
 
-					// span.textContent = `${data.lastname} ${data.firstname}`;
-					// form.setAttribute('action', `/users/update/${data.id}`);
-				})
-				.catch(error => console.error('Error:', error));
-			});
-		}
+            lastname.value = user.lastname;
+            firstname.value = user.firstname;
+            phone.value = user.phone;
+            email.value = user.email;
+            role_id.value = user.role_id;
+            birth_date.value = user.serviceProvider? user.serviceProvider.birth_date: undefined;
+            birth_place.value = user.serviceProvider?user.serviceProvider.birth_place  : undefined;
+            residence_place.value = user.serviceProvider?user.serviceProvider.residence_place : undefined;
+            adress.value = user.serviceProvider?user.serviceProvider.adress : undefined;
+            children_number.value = user.serviceProvider?user.serviceProvider.children_number : undefined;
+
+            edit_form.action=`/users/update/${user.id}`;
+        });
+        })
+        // delete_button.forEach(button => {
+        //     button.addEventListener('click', function() {
+        //         const user = JSON.parse(this.getAttribute('data-user'));
+        //         console.log(user.id)
+        //         delete_form.action=`/users/delete/${user.id}`;
+        //     });
+        // });
+
+        // edit_button.forEach(button => {
+        //     button.addEventListener('click', function() {
+        //     const user = JSON.parse(this.getAttribute('data-user'));
+        //     console.log(user.id)
+
+        //     lastname.value = user.lastname;
+        //     firstname.value = user.firstname;
+        //     phone.value = user.phone;
+        //     email.value = user.email;
+        //     role_id.value = user.role_id;
+        //     birth_date.value = user.serviceProvider? user.serviceProvider.birth_date: undefined;
+        //     birth_place.value = user.serviceProvider?user.serviceProvider.birth_place  : undefined;
+        //     residence_place.value = user.serviceProvider?user.serviceProvider.residence_place : undefined;
+        //     adress.value = user.serviceProvider?user.serviceProvider.adress : undefined;
+        //     children_number.value = user.serviceProvider?user.serviceProvider.children_number : undefined;
+
+        //     edit_form.action=`/users/update/${user.id}`;
+        // });
+        // });
+
+		// for (let i = 0; i < editbtns.length; i++) {
+		// 	editbtns[i].addEventListener('click', function (){
+		// 		let id = this.getAttribute('data-user-id');
+		// 		fetch(`/users/find/${id}`, {
+		// 			method: 'GET',
+		// 			headers: {
+		// 				'Content-Type': 'application/json',
+		// 				'X-CSRF-TOKEN': '{{ csrf_token() }}'
+		// 			},
+		// 		})
+		// 		.then(response => response.json())
+		// 		.then(data => {
+		// 			// console.log(data); // Handle the response from the server
+		// 			lastname.value = data.lastname;
+		// 			firstname.value = data.firstname;
+		// 			phone.value = data.phone;
+		// 			email.value = data.email;
+		// 			role_id.value = data.role_id;
+
+		// 			username_span.textContent = 'Yo';
+
+		// 			form.action = `/users/update/${data.id}`;
+		// 			delete_form.action = `/users/destroy/${data.id}`;
+
+		// 			// span.textContent = `${data.lastname} ${data.firstname}`;
+		// 			// form.setAttribute('action', `/users/update/${data.id}`);
+		// 		})
+		// 		.catch(error => console.error('Error:', error));
+		// 	});
+		// }
 
 	</script>
 	{{-- Hidden inputs --}}
@@ -466,7 +567,7 @@
 				});
 
 				// Show the specific fields based on selection
-				if (selectedType == 1) {
+				if (selectedType == "3") {
 					allFields.forEach(field => field.classList.remove('d-none'));
 					allFields.forEach(field => field.classList.setAttribute('required', 'required'));
 				}
@@ -481,4 +582,37 @@
 
 		hideInputs();
 	</script>
+    <script>
+        function u_hideInputs() {
+            const u_role_id = document.getElementById('u_role_id');
+			const u_hiddenInputs = document.getElementById('u_hidden-inputs');
+
+			u_role_id.addEventListener('change', function() {
+				const u_selectedType = this.value;
+				// const fieldsToShow = document.getElementById('serviceProvider-fields');
+
+				// Hide all initially
+				const u_allFields = u_hiddenInputs.querySelectorAll('.u_hidden-group');
+				u_allFields.forEach(field => field.classList.add('d-none'));
+				u_allFields.forEach(field => {
+					if (field.required)
+						field.classList.removeAttribute('required')
+				});
+
+				// Show the specific fields based on selection
+                if (u_selectedType == '3') {
+				// if (selectedType == 'serviceProvider') {
+					u_allFields.forEach(field => field.classList.remove('d-none'));
+					u_allFields.forEach(field => field.classList.setAttribute('required', 'required'));
+				}
+			});
+
+			// Trigger initial check on page load (optional)
+			window.onload = function() {
+				const selectedType = u_role_id.value;
+				u_role_id.dispatchEvent(new Event('change')); // Simulate change event
+			};
+        }
+        u_hideInputs();
+    </script>
 @endsection

@@ -1,16 +1,16 @@
 <form class="mx-4" action="/roles/store" method="POST">
     @csrf
     <div class="input-box">
-        <label for="code" class="text-white">Code</label>
+        <label for="code">Code</label>
         <input type="text" id="code" name="code" class="form-control" required>
     </div>
     <div class="input-box">
-        <label for="name" class="text-white">Name</label>
+        <label for="name">Name</label>
         <input type="text" id="name" name="name"` class="form-control" required>
         <span id="Error" style="font-size: 0.8em; color: rgb(255, 68, 68); font-style: italic; border: solid 1px transparent;"></span>
     </div>
     <div class="input-box">
-        <label for="ressource" class="text-white">Ressource</label>
+        <label for="ressource">Ressource</label>
         <select class="form-control" id="ressource" name="ressources[]" multiple>
             @if ($ressources)
 				@foreach ($ressources as $ressource)

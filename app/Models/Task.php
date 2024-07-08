@@ -13,8 +13,8 @@ class Task extends Model
         'name',
         'description',
         'status',
-        'startDate',
-        'endDate',
+        'start_date',
+        'end_date',
         'contract_id',
     ];
 

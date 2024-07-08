@@ -1,12 +1,12 @@
-@extends('layouts.admin')
+@extends('layouts.manager')
 
- @section('title','Roles management')
+ @section('title','Payments management')
 
  @section('head-complement')
-     {{-- DataTables --}}
-     <link rel="stylesheet" href="{{ asset('admin/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
-     <link rel="stylesheet" href="{{ asset('admin/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
- @endsection
+    {{-- DataTables --}}
+    <link rel="stylesheet" href="{{ asset('admin/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
+	<link rel="stylesheet" href="{{ asset('admin/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
+@endsection
 
  @section('content')
      {{-- Header --}}
@@ -14,56 +14,43 @@
          <div class="container-fluid">
              <div class="row mb-2">
                  <div class="col-sm-6">
-                     <h1 class="m_0 text-dark">Gestion des rôles</h1>
+                     <h1 class="m_0 text-dark">Gestion des paiements</h1>
                  </div><!-- /.col -->
                  <div class="col-sm-6">
-                    <button type="button" class="btn btn-default float-sm-right" data-toggle="modal" data-target="#modal_creation_form">
-                        Créer un rôle
+                    <button type="button" class="btn btn-default float-sm-right"  onclick="window.location='http:\/\/127.0.0.1:8000\/contracts\/{{$contract[0]->id}}\/payments\/create'">
+                        Ajouter un paiement
                     </button>
                  </div><!-- /.col -->
              </div><!-- /.row -->
          </div><!-- /.container-fluid -->
      </div>
 
-    {{-- Modal (role creation form) --}}
+    {{-- Modal (payments creation form) --}}
 	<div class="modal fade" id="modal_creation_form" data-backdrop="static">
 		<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h4 class="modal-title">Création d'un role</h4>
+				<h4 class="modal-title">Ajout d'un paiement</h4>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
 			<div class="modal-body">
-				<form class="mx-4" id="role-form" method="POST" action="/roles/store" enctype="multipart/form-data">
+				<form class="mx-4" id="task-form" method="POST" action="/roles/store">
 					@csrf
-					<div class="input-box">
-                        <label for="code">Code</label>
-                        <input type="text" id="code" name="code" class="form-control" required>
-                    </div>
-                    <div class="input-box">
-                        <label for="name">Name</label>
-                        <input type="text" id="name" name="name"` class="form-control" required>
-                        <span id="Error" style="font-size: 0.8em; color: rgb(255, 68, 68); font-style: italic; border: solid 1px transparent;"></span>
-                    </div>
-                    <div class="input-box">
-                        <label for="ressource">Ressource</label>
-                        <select class="form-control" id="ressource" name="ressources[]" multiple>
-                            @if ($ressources)
-                                @foreach ($ressources as $ressource)
-
-                                <option value="{{ $ressource->id }}">{{ $ressource->name }}</option>
-
-                                @endforeach
-                            @endif
-                        </select>
-                    </div>
+					<div>
+						<label for="amount">Montant</label>
+						<input type="text" id="amount" name="amount" class="form-control" required>
+					</div>
+					<div class="mt-3">
+						<label for="payment_date">Date de paiement</label>
+                        <input type="text" id="payment_date" name="payment_date" class="form-control" required>
+					</div>
 				</form>
 			</div>
 			<div class="modal-footer justify-content-between">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
-				<button type="submit" class="btn btn-primary" form="role-form">Enregistrer</button>
+				<button type="submit" class="btn btn-primary" form="task-form">Enregistrer</button>
 			</div>
 		</div>
 		<!-- /.modal-content -->
@@ -74,7 +61,7 @@
     {{-- Datatable --}}
      <div class="card">
          <div class="card-header">
-           <h3 class="card-title">Gérez vos rôles ici.	</h3>
+           <h3 class="card-title">Gérez vos paiements ici.	</h3>
          </div>
          <!-- /.card-header -->
          <div class="card-body">
@@ -82,26 +69,26 @@
                  <thead>
                  <tr>
                     <th>Id</th>
-                    <th>Code</th>
-                    <th>Nom</th>
+                    <th>Montant</th>
+                    <th>Date de paiement</th>
                  </tr>
                  </thead>
                  <tbody>
-
-                     @foreach ($roles as $role)
-                         <tr>
-                             <td>{{ $role->id }}</td>
-                             <td>{{ $role->code }}</td>
-                             <td>{{ $role->name }}</td>
-                         </tr>
+                    
+                     @foreach($payments as $payment)
+                     <tr>
+                        <td>{{ $payment->id }}</td>
+                        <td>{{ $payment->amount }}</td>
+                        <td>{{ $payment->payment_date }}</td>
+                    </tr>
                      @endforeach
 
                  </tbody>
                  <tfoot>
                      <tr>
                         <th>Id</th>
-                        <th>Code</th>
-                        <th>Nom</th>
+                        <th>Montant</th>
+                        <th>Date de paiement</th>
                      </tr>
                  </tfoot>
              </table>

@@ -22,14 +22,21 @@
           </a>
           <div class="dropdown-menu dropdown-menu dropdown-menu-right">
             <span class="dropdown-item dropdown-header">
-              <div class="d-block" href="#" style="color: #044687;"><?php echo "John Doe";// echo $_SESSION['firstname'] ." ". $_SESSION['name'] ?></div>
+              <div class="d-block" href="#" style="color: #044687;">{{ Auth::user()->firstname }} {{ Auth::user()->lastname }}<?php //echo "John Doe"; echo $_SESSION['firstname'] ." ". $_SESSION['name'] ?></div>
             </span>
             <div class="dropdown-divider"></div>
-            <a href="#" class="dropdown-item"> <i class="fas fa-user mr-2"></i> Profil</a>
-            <div class="dropdown-divider"></div>
-            <a href="#" class="dropdown-item"> <i class="fas fa-sliders-h mr-2"></i> Paramètres</a>
-            <div class="dropdown-divider"></div>
-            <a href="../Controllers/deconnexion.php" class="dropdown-item"> <i class="fas fa-sign-out-alt mr-2"></i> Déconnexion</a>
+            <div class="dropdown-item">
+              <form method="POST" action="{{ route('logout') }}">
+                @csrf
+  
+                <i class="fas fa-sign-out-alt"></i>
+                <x-dropdown-link :href="route('logout')" class="text-dark"
+                        onclick="event.preventDefault();
+                                    this.closest('form').submit();">
+                    {{ __('Déconnexion') }}
+                </x-dropdown-link>
+              </form>
+            </div>
           </div>
         </li>
       </nav>
@@ -38,7 +45,7 @@
       <!-- Main Sidebar Container -->
       <aside class="main-sidebar sidebar-dark-primary elevation-4">
         <!-- Brand Logo -->
-        <a href="/adminDashboard" class="brand-link">
+        <a href="/users" class="brand-link">
           <img src="img/logo4.png" alt="Logo" class="brand-image img-circle elevation-3 mr-3 bg-white" style="opacity: .8">
           <span class="brand-text font-weight-light">SOLUX</span>
         </a>
@@ -52,50 +59,27 @@
               <!-- Add icons to the links using the .nav-icon class
                    with font-awesome or any other icon font library -->
 
-              {{-- dropdown --}}
-              {{-- <li class="nav-item has-treeview menu-open">
-                <a href="#" class="nav-link active">
-                  <i class="nav-icon fas fa-tachometer-alt"></i>
-                  <p>
-                    Dashboard
-                    <i class="right fas fa-angle-left"></i>
-                  </p>
-                </a>
-                <ul class="nav nav-treeview">
-                  <li class="nav-item">
-                    <a href="/dashboard" class="nav-link active">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Dashboard v1</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="./index2.html" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Dashboard v2</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="./index3.html" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Dashboard v3</p>
-                    </a>
-                  </li>
-                </ul>
-              </li> --}}
-
-              <li class="nav-item">
-                <a href="/adminDashboard" class="nav-link">
-                  <i class="nav-icon fas fa-home"></i>
-                  <p>Tableau de bord</p>
-                </a>
-              </li>
-
               <li class="nav-item">
                 <a href="/users" class="nav-link">
-                  <i class="nav-icon fas fa-archive"></i>
+                  <i class="nav-icon fas fa-user"></i>
                   <p>Utilisateurs</p>
                 </a>
               </li>
+
+              {{-- <li class="nav-item">
+                <a href="/roles" class="nav-link">
+                  <i class="nav-icon fas fa-tag"></i>
+                  <p>Rôles</p>
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a href="/ressources" class="nav-link">
+                  <i class="nav-icon fas fa-archive"></i>
+                  <p>Ressources</p>
+                </a>
+              </li> --}}
+
             </ul>
           </nav>
           <!-- /.sidebar-menu -->

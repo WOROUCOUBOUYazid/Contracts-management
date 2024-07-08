@@ -137,8 +137,18 @@ class ContractController extends Controller
         ini_set('max_execution_time', '300');
         // dd(intval($id));
         $contract = Contract::findOrFail(intval($id));
-        $pdf = PDF::loadView('contracts.pdf', ['contract' => $contract]);
+        // if($contract->file) {
+        //     return response()->file( Storage::disk('contracts')->url($contract->file));
 
-        return $pdf->stream();
+        // } else {
+            $pdf = PDF::loadView('contracts.pdf', ['contract' => $contract]);
+
+            return $pdf->download();
+            // return $pdf->stream();
+        // }
+        // $pdf = PDF::loadView('contracts.pdf', ['contract' => $contract]);
+
+        // return $pdf->download();
+        // return $pdf->stream();
     }
 }

@@ -260,24 +260,25 @@
 
 			@if ($contracts)
 
-				@foreach ($contracts as $element)
+				@foreach ($contracts as $contract)
 
 				<tr>
-					<td>{{ $element->id }}</td>
-					<td>{{ $element->title }}</td>
-					<td>{{ $element->serviceProvider->user->lastname }} {{ $element->serviceProvider->user->firstname }}</td>
-					<td>{{ $element->start_date }}</td>
-					<td>{{ $element->end_date }}</td>
+					<td>{{ $contract->id }}</td>
+					<td>{{ $contract->title }}</td>
+					<td>{{ $contract->serviceProvider->user->lastname }} {{ $contract->serviceProvider->user->firstname }}</td>
+					<td>{{ $contract->start_date }}</td>
+					<td>{{ $contract->end_date }}</td>
 					<td>
 					  <div class="row d-flex justify-content-around">
-						  <button class="d-flex flex-column align-items-center border border-light bg-transparent"><a href="/tasks" style="text-decoration: none; color: inherit;"><i class="fas fa-clipboard"></i><p class="small">Taches</p></a></button>
-						  <button class="d-flex flex-column align-items-center border border-light bg-transparent"><a href="/payments" style="text-decoration: none; color: inherit;"><i class="fas fa-dollar-sign"></i><p class="small">Paiements</p></a></button>
+						  <button class="d-flex flex-column align-items-center border border-light bg-transparent"><a href="/contracts/{{ $contract->id }}/tasks" style="text-decoration: none; color: inherit;"><i class="fas fa-clipboard"></i><p class="small">Taches</p></a></button>
+						  <button class="d-flex flex-column align-items-center border border-light bg-transparent"><a href="/contracts/{{ $contract->id }}/payments" style="text-decoration: none; color: inherit;"><i class="fas fa-dollar-sign"></i><p class="small">Paiements</p></a></button>
 						  <div>
 							  <button type="button" class="border border-light bg-transparent dropdown-toggle" data-toggle="dropdown">
 							  </button>
 							  <ul class="dropdown-menu">
-								<li><a class="dropdown-item d-flex align-items-center" href="/contracts/download/{{ $element->id }}"><i class="fas fa-eye mr-2"></i>Afficher</a></li>
-								<li><button class="dropdown-item border border-light bg-transparent edit-btn" data-user-id="{{ $element->id }}" data-toggle="modal" data-target="#modal_update_form" style="color: inherit"><i class="fas fa-edit mr-2"></i>Modifier</button></li>
+								{{-- <li><a class="dropdown-item d-flex align-items-center" href="/contracts/download/{{ $contract->id }}"><i class="fas fa-eye mr-2"></i>Afficher</a></li> --}}
+								<li><a class="dropdown-item d-flex align-items-center" href="/contracts/download/{{ $contract->id }}"><i class="fas fa-download mr-2"></i>Télécharger</a></li>
+								<li><button class="dropdown-item border border-light bg-transparent edit-btn" data-user-id="{{ $contract->id }}" data-toggle="modal" data-target="#modal_update_form" style="color: inherit"><i class="fas fa-edit mr-2"></i>Modifier</button></li>
 								<li><button class="dropdown-item border border-light bg-transparent edit-btn" data-toggle="modal" data-target="#modal_contract_delete" style="color: inherit"><i class="fas fa-trash mr-2"></i>Déssativer</button></li>
 							  </ul>
 						  </div>

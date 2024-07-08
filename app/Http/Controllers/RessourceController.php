@@ -77,6 +77,7 @@ class RessourceController extends Controller
                 'http_method' => $route->methods()[0],
             ]);
         }
-        return Ressource::all();
+        return redirect(route('ressources.index', absolute: false));
+        // return Ressource::all();
     }
 }

@@ -1,0 +1,113 @@
+    :root {
+        --bleeding: 0.5cm;
+        --margin: 1cm;
+    }
+
+    @page {
+        size: A4;
+        margin: 0;
+    }
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0 auto;
+        padding: 0;
+        background: rgb(255, 255, 255);
+        display: flex;
+        flex-direction: column;
+    }
+
+    .page {
+        display: inline-block;
+        position: relative;
+        /* height: 210mm;
+        width: 148mm; */
+        height: 297mm;
+        width: 210mm;
+        font-size: 13pt;
+        margin: 2em auto;
+        padding: calc(var(--bleeding) + var(--margin));
+        box-shadow: 0 0 0.5cm rgba(0, 0, 0, 0.5);
+        background: white;
+    }
+
+    .main{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .title_page{
+        font-size: 23pt;
+        margin-top: 45%;
+        text-align: center;
+    }
+
+    .title{
+        margin-top: 1em;
+        font-size: 16pt;
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 1em;
+        text-decoration: underline;
+    }
+
+    .article{
+        text-decoration: underline;
+    }
+
+    p{
+        text-indent: 40px;
+    }
+
+    .signature{
+        /* margin-top: 30px; */
+        margin: 30px 20px;
+        display: flex;
+        justify-content: space-between;
+    }
+    .signature div{
+        height: 100px;
+        /* background-color: gray; */
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    .signature div span:last-child{
+        text-decoration: underline;
+    }
+
+    .my_ul_list{
+        list-style: disc;
+        list-style: inside;
+    }
+
+    .my_ol_list{
+        list-style: decimal;
+        padding: 0 20px;
+        /* text-justify: inter-word; */
+    }
+
+    @media screen {
+        .page::after {
+        position: absolute;
+        content: '';
+        top: 0;
+        left: 0;
+        width: calc(100% - var(--bleeding) * 2);
+        height: calc(100% - var(--bleeding) * 2);
+        margin: var(--bleeding);
+        outline: thin dashed black;
+        pointer-events: none;
+        z-index: 9999;
+        }
+    }
+
+    @media print {
+        .page {
+        margin: 0;
+        overflow: hidden;
+        }
+    }
